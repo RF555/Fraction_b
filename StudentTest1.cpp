@@ -23,11 +23,11 @@ TEST_CASE("Fraction object initialization & Getters return expected values") {
     CHECK(((b.getNumerator() == 333) && (b.getDenominator() == 1000)));
 
     // Check that a Fraction can't be created if denominator is 0
-    CHECK_THROWS(Fraction(1,0));
+    CHECK_THROWS(Fraction(1, 0));
 }
 
 TEST_CASE("Fraction addition test") {
-    Fraction a(1, 2), b(1, 4); 
+    Fraction a(1, 2), b(1, 4);
     Fraction c = a + b; // 1/2 + 1/4 = 3/4
     CHECK(((c.getNumerator() == 3) && (c.getDenominator() == 4)));
     CHECK(__gcd(c.getNumerator(), c.getDenominator()) == 1); // Reduced as possible
@@ -50,7 +50,7 @@ TEST_CASE("Fraction subtraction test") {
     Fraction c = a - b;
     CHECK(((c.getNumerator() == 1) && (c.getDenominator() == 4)));
     CHECK(__gcd(c.getNumerator(), c.getDenominator()) == 1);
-    
+
     Fraction d(4, 5);
     float e = 0.4;
     Fraction f = d - e; // 4/5 - 2/5 = 2/5
@@ -67,7 +67,7 @@ TEST_CASE("Fraction multiplication test") {
     Fraction c = a * b;
     CHECK(((c.getNumerator() == 1) && (c.getDenominator() == 8)));
     CHECK(__gcd(c.getNumerator(), c.getDenominator()) == 1);
-    
+
     Fraction d(4, 5);
     float e = 0.4;
     Fraction f = d * e; // 4/5 * 2/5 = 8/25
@@ -84,7 +84,7 @@ TEST_CASE("Fraction division test") {
     Fraction c = a / b; // 1/2 / 1/4 = 1/2 * 4/1 = 4/2 = 2/1
     CHECK(((c.getNumerator() == 2) && (c.getDenominator() == 1)));
     CHECK(__gcd(c.getNumerator(), c.getDenominator()) == 1);
-    
+
     Fraction d(4, 5);
     float e = 0.4;
     Fraction f = d / e; // 4/5 / 2/5 = 4/5 * 5/2 = 20 / 10 = 2/1
@@ -105,9 +105,9 @@ TEST_CASE("Division by zero throws an exception") {
 TEST_CASE("Fraction < comparison operator") {
     Fraction a(1, 2);
     Fraction b(1, 4);
-    
+
     CHECK(b < a);
-    CHECK_FALSE(b >= a); 
+    CHECK_FALSE(b >= a);
     CHECK(0.3 < a);
     CHECK_FALSE(0.3 >= a);
     CHECK(a < 1);
@@ -117,7 +117,7 @@ TEST_CASE("Fraction < comparison operator") {
 TEST_CASE("Fraction <= comparison operator") {
     Fraction a(1, 2);
     Fraction b(1, 4);
-    
+
     CHECK(b <= a);
     CHECK_FALSE(b > a);
     CHECK(0.5 <= a);
@@ -128,7 +128,7 @@ TEST_CASE("Fraction <= comparison operator") {
 
 TEST_CASE("Fraction > comparison operator") {
     Fraction a(1, 2), b(1, 4);
-    
+
     CHECK(a > b);
     CHECK_FALSE(a <= b);
     CHECK(a > 0.3);
@@ -141,7 +141,7 @@ TEST_CASE("Fraction > comparison operator") {
 TEST_CASE("Fraction >= comparison operator") {
     Fraction a(1, 2);
     Fraction b(1, 4);
-    
+
     CHECK(a >= b);
     CHECK_FALSE(a < b);
     CHECK(a >= 0.3);
