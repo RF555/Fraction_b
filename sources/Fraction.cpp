@@ -165,6 +165,7 @@ namespace ariel {
             if (new_den == 0) {
                 throw invalid_argument("ARITHMETIC ERROR: Denominator can not be 0!\n");
             }
+            q.reducedForm();
             // rewind on error
             auto errorState = input.rdstate(); // remember error state
             input.clear(); // clear error so seekg will work
@@ -176,6 +177,7 @@ namespace ariel {
             }
             q._numerator = new_num;
             q._denominator = new_den;
+            q.reducedForm();
         }
         return input;
     }
@@ -186,6 +188,10 @@ namespace ariel {
         int d = gcd(num, den);
         this->_numerator = this->_numerator / d;
         this->_denominator = this->_denominator / d;
+        if (this->_denominator < 0) {
+            this->_denominator *= -1;
+            this->_numerator *= -1;
+        }
     }
 
     Fraction::operator double() const {
