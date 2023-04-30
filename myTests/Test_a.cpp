@@ -1,16 +1,17 @@
-#include "doctest.h"
-#include "sources/Fraction.hpp"
+#include "../doctest.h"
+#include <stdexcept>
+#include "../sources/Fraction.hpp"
 
 using namespace std;
 using namespace ariel;
 
 TEST_CASE("Constructors initiated correctly") {
     Fraction a;
-    CHECK(a.numerator() == 0);
-    CHECK(a.denominator() == 1);
+    CHECK(a.getNumerator() == 0);
+    CHECK(a.getDenominator() == 1);
     Fraction b(1, 3);
-    CHECK(b.numerator() == 1);
-    CHECK(b.denominator() == 3);
+    CHECK(b.getNumerator() == 1);
+    CHECK(b.getDenominator() == 3);
     float ff = 1.0 / 3;
     Fraction c(ff);
     CHECK(c == 1.0 / 3);
@@ -23,11 +24,12 @@ TEST_CASE("Constructors initiated correctly") {
 
 TEST_CASE("Reduced form") {
     Fraction c(2, 4);
-    CHECK(c.numerator() == 1);
-    CHECK(c.denominator() == 2);
+    CHECK(c.getNumerator() == 1);
+    CHECK(c.getDenominator() == 2);
     Fraction d(3, 9);
-    CHECK(d.numerator() == 1);
-    CHECK(d.denominator() == 3);
+    CHECK(d.getNumerator() == 1);
+    CHECK(d.getDenominator() == 3);
+//    cout << "d = " << d << " = " << double(d) << endl;
 
 }
 
@@ -43,12 +45,12 @@ TEST_CASE("Copy constructor and = operation") {
     Fraction a(5, 9);
     Fraction b(a);
     CHECK(&a != &b);
-    CHECK(a.numerator() == b.numerator());
-    CHECK(a.denominator() == b.denominator());
+    CHECK(a.getNumerator() == b.getNumerator());
+    CHECK(a.getDenominator() == b.getDenominator());
     Fraction c = a;
     CHECK(&a != &c);
-    CHECK(a.numerator() == c.numerator());
-    CHECK(a.denominator() == c.denominator());
+    CHECK(a.getNumerator() == c.getNumerator());
+    CHECK(a.getDenominator() == c.getDenominator());
 }
 
 TEST_CASE("Arithmetic operations") {
@@ -65,6 +67,7 @@ TEST_CASE("Arithmetic operations") {
     e -= d;
     CHECK(e == (0.2 - 0.08));
     d *= b;
+//    cout << "d=" << double(d) << endl;
     CHECK(d == 0.008);
     CHECK(a++ == 0);
     CHECK(a == 1);
@@ -75,9 +78,13 @@ TEST_CASE("Arithmetic operations") {
     CHECK(--f == 0.8571);
     Fraction g = c / f;
     Fraction _g(0.4667);
+//    cout << "g = " << g << " = " << double(g) << endl;
+//    cout << "_g = " << _g << " = " << double(_g) << endl;
     CHECK(g == 0.4666);
     Fraction gg = -g;
     Fraction _gg(-0.4667);
+//    cout << "gg = " << gg << " = " << double(gg) << endl;
+//    cout << "_gg = " << _gg << " = " << double(_gg) << endl;
     CHECK(gg == -0.4666);
 }
 
@@ -105,4 +112,8 @@ TEST_CASE("Boolean operations") {
     CHECK(b > a);
     CHECK(d < a);
     CHECK(b > d);
+//    cout << "a = " << a << " = " << double(a) << endl;
+//    cout << "b = " << b << " = " << double(b) << endl;
+//    cout << "c = " << c << " = " << double(c) << endl;
+//    cout << "d = " << d << " = " << double(d) << endl;
 }

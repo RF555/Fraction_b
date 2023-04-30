@@ -1,6 +1,6 @@
-#include "../doctest.h"
+#include "doctest.h"
 #include <stdexcept>
-#include "../sources/Fraction.hpp"
+#include "sources/Fraction.hpp"
 
 using namespace std;
 using namespace ariel;
