@@ -19,22 +19,22 @@ namespace ariel {
 
     Fraction::Fraction(const int &n) : _numerator(n), _denominator(1) {}
 
-    Fraction::Fraction(const Fraction &_other)
-            : _numerator(_other._numerator), _denominator(_other._denominator) {
+    Fraction::Fraction(const Fraction &_frac)
+            : _numerator(_frac._numerator), _denominator(_frac._denominator) {
         this->reducedForm();
     }
 
-    Fraction::Fraction(Fraction &&_other) noexcept: _numerator(_other._numerator), _denominator(_other._denominator) {
-        this->reducedForm();
-    }
-
-    Fraction::Fraction(
-            const double &d) : _numerator(floor(d * 1000)), _denominator(1000) {
+    Fraction::Fraction(Fraction &&_frac) noexcept: _numerator(_frac._numerator), _denominator(_frac._denominator) {
         this->reducedForm();
     }
 
     Fraction::Fraction(
-            const float &f) : _numerator(floor(f * 1000)), _denominator(1000) {
+            const double &dec) : _numerator(floor(dec * 1000)), _denominator(1000) {
+        this->reducedForm();
+    }
+
+    Fraction::Fraction(
+            const float &flt) : _numerator(floor(flt * 1000)), _denominator(1000) {
         this->reducedForm();
     }
 
@@ -45,56 +45,56 @@ namespace ariel {
 
     int Fraction::getDenominator() { return this->_denominator; }
 
-    Fraction &Fraction::operator=(const Fraction &q) {
-        if (this != &q) {
-            this->_numerator = q._numerator;
-            this->_denominator = q._denominator;
+    Fraction &Fraction::operator=(const Fraction &_frac) {
+        if (this != &_frac) {
+            this->_numerator = _frac._numerator;
+            this->_denominator = _frac._denominator;
         }
         return *this;
     }
 
-    Fraction operator+(const Fraction &a, const Fraction &b) {
-        return {addOvf(mulOvf(a._numerator, b._denominator), mulOvf(b._numerator, a._denominator)),
-                mulOvf(a._denominator, b._denominator)};
+    Fraction operator+(const Fraction &_frac1, const Fraction &_frac2) {
+        return {addOvf(mulOvf(_frac1._numerator, _frac2._denominator), mulOvf(_frac2._numerator, _frac1._denominator)),
+                mulOvf(_frac1._denominator, _frac2._denominator)};
     }
 
-    Fraction operator-(const Fraction &a, const Fraction &b) {
-        return {addOvf(mulOvf(a._numerator, b._denominator), mulOvf(mulOvf(-1, b._numerator), a._denominator)),
-                mulOvf(a._denominator, b._denominator)};
+    Fraction operator-(const Fraction &_frac1, const Fraction &_frac2) {
+        return {addOvf(mulOvf(_frac1._numerator, _frac2._denominator), mulOvf(mulOvf(-1, _frac2._numerator), _frac1._denominator)),
+                mulOvf(_frac1._denominator, _frac2._denominator)};
     }
 
-    Fraction operator*(const Fraction &a, const Fraction &b) {
-        return {mulOvf(a._numerator, b._numerator),
-                mulOvf(a._denominator, b._denominator)};
+    Fraction operator*(const Fraction &_frac1, const Fraction &_frac2) {
+        return {mulOvf(_frac1._numerator, _frac2._numerator),
+                mulOvf(_frac1._denominator, _frac2._denominator)};
     }
 
-    Fraction operator/(const Fraction &a, const Fraction &b) {
-        if (b._numerator == 0) {
+    Fraction operator/(const Fraction &_frac1, const Fraction &_frac2) {
+        if (_frac2._numerator == 0) {
             throw overflow_error("ARITHMETIC ERROR: Can not divide by 0!");
         }
-        return {mulOvf(a._numerator, b._denominator), mulOvf(a._denominator, b._numerator)};
+        return {mulOvf(_frac1._numerator, _frac2._denominator), mulOvf(_frac1._denominator, _frac2._numerator)};
     }
 
 
-    Fraction &Fraction::operator+=(const Fraction &q) {
-        this->_numerator = addOvf(mulOvf(this->_numerator, q._denominator),
-                                  mulOvf(q._numerator, this->_denominator));
-        this->_denominator = mulOvf(this->_denominator, q._denominator);
+    Fraction &Fraction::operator+=(const Fraction &_frac) {
+        this->_numerator = addOvf(mulOvf(this->_numerator, _frac._denominator),
+                                  mulOvf(_frac._numerator, this->_denominator));
+        this->_denominator = mulOvf(this->_denominator, _frac._denominator);
         this->reducedForm();
         return *this;
     }
 
-    Fraction &Fraction::operator-=(const Fraction &q) {
-        this->_numerator = addOvf(mulOvf(this->_numerator, q._denominator),
-                                  mulOvf(mulOvf(-1, q._numerator), this->_denominator));
-        this->_denominator = mulOvf(this->_denominator, q._denominator);
+    Fraction &Fraction::operator-=(const Fraction &_frac) {
+        this->_numerator = addOvf(mulOvf(this->_numerator, _frac._denominator),
+                                  mulOvf(mulOvf(-1, _frac._numerator), this->_denominator));
+        this->_denominator = mulOvf(this->_denominator, _frac._denominator);
         this->reducedForm();
         return *this;
     }
 
-    Fraction &Fraction::operator*=(const Fraction &q) {
-        this->_numerator = mulOvf(this->_numerator, q._numerator);
-        this->_denominator = mulOvf(this->_denominator, q._denominator);
+    Fraction &Fraction::operator*=(const Fraction &_frac) {
+        this->_numerator = mulOvf(this->_numerator, _frac._numerator);
+        this->_denominator = mulOvf(this->_denominator, _frac._denominator);
         this->reducedForm();
         return *this;
     }
@@ -133,32 +133,32 @@ namespace ariel {
         return this->_numerator == 0;
     }
 
-    bool operator==(const Fraction &a, const Fraction &b) {
-        return (double(a) == double(b) || abs(double(a) - double(b)) < 0.001);
+    bool operator==(const Fraction &_frac1, const Fraction &_frac2) {
+        return (double(_frac1) == double(_frac2) || abs(double(_frac1) - double(_frac2)) < 0.001);
     }
 
-    bool operator!=(const Fraction &a, const Fraction &b) {
-        return !(a == b);
+    bool operator!=(const Fraction &_frac1, const Fraction &_frac2) {
+        return !(_frac1 == _frac2);
     }
 
-    bool operator>=(const Fraction &a, const Fraction &b) {
-        return double(a) >= double(b);
+    bool operator>=(const Fraction &_frac1, const Fraction &_frac2) {
+        return double(_frac1) >= double(_frac2);
     }
 
-    bool operator<=(const Fraction &a, const Fraction &b) {
-        return double(a) <= double(b);
+    bool operator<=(const Fraction &_frac1, const Fraction &_frac2) {
+        return double(_frac1) <= double(_frac2);
     }
 
-    bool operator>(const Fraction &a, const Fraction &b) {
-        return double(a) > double(b);
+    bool operator>(const Fraction &_frac1, const Fraction &_frac2) {
+        return double(_frac1) > double(_frac2);
     }
 
-    bool operator<(const Fraction &a, const Fraction &b) {
-        return double(a) < double(b);
+    bool operator<(const Fraction &_frac1, const Fraction &_frac2) {
+        return double(_frac1) < double(_frac2);
     }
 
-    std::ostream &operator<<(ostream &output, const Fraction &q) {
-        return output << q._numerator << '/' << q._denominator;
+    std::ostream &operator<<(ostream &output, const Fraction &_frac) {
+        return output << _frac._numerator << '/' << _frac._denominator;
     }
 
     istream &Fraction::checkNextChar(istream &input, char expectedChar) {
@@ -171,7 +171,7 @@ namespace ariel {
         return input;
     }
 
-    std::istream &operator>>(istream &input, Fraction &q) {
+    std::istream &operator>>(istream &input, Fraction &_frac) {
         int new_num = 0, new_den = 0;
         // remember place for rewinding
         ios::pos_type startPosition = input.tellg();
@@ -180,7 +180,7 @@ namespace ariel {
             if (new_den == 0) {
                 throw runtime_error("RUNTIME ERROR: Denominator can not be 0!\n");
             }
-            q.reducedForm();
+            _frac.reducedForm();
             // rewind on error
             auto errorState = input.rdstate(); // remember error state
             input.clear(); // clear error so seekg will work
@@ -190,9 +190,9 @@ namespace ariel {
             if (new_den == 0) {
                 throw runtime_error("RUNTIME ERROR: Denominator can not be 0!\n");
             }
-            q._numerator = new_num;
-            q._denominator = new_den;
-            q.reducedForm();
+            _frac._numerator = new_num;
+            _frac._denominator = new_den;
+            _frac.reducedForm();
         }
         return input;
     }
@@ -217,30 +217,30 @@ namespace ariel {
         return round(this->_numerator * 100000.0 / this->_denominator) / 100000;
     }
 
-    Fraction &Fraction::operator=(Fraction &&_other) noexcept {
-        this->_numerator = _other._numerator;
-        this->_denominator = _other._denominator;
+    Fraction &Fraction::operator=(Fraction &&_frac) noexcept {
+        this->_numerator = _frac._numerator;
+        this->_denominator = _frac._denominator;
         return *this;
     }
 
-    int addOvf(int a, int b) {
-        if (((a >= 0) && (b >= 0) && (a > max_int - b)) ||
-            ((a < 0) && (b < 0) && (a < min_int - b))) {
+    int addOvf(int _n1, int _n2) {
+        if (((_n1 >= 0) && (_n2 >= 0) && (_n1 > max_int - _n2)) ||
+            ((_n1 < 0) && (_n2 < 0) && (_n1 < min_int - _n2))) {
             throw overflow_error("OVERFLOW ERROR!\n");
         } else {
-            return a + b;
+            return _n1 + _n2;
         }
     }
 
-    int mulOvf(int a, int b) {
-        if (((a == -1) && (b == min_int)) || ((a == min_int) && (b == -1))) {
+    int mulOvf(int _n1, int _n2) {
+        if (((_n1 == -1) && (_n2 == min_int)) || ((_n1 == min_int) && (_n2 == -1))) {
             throw overflow_error("OVERFLOW ERROR!\n");
         } else {
-            int c = a * b;
-            if (((a != 0) && (c / a != b))) {
+            int c = _n1 * _n2;
+            if (((_n1 != 0) && (c / _n1 != _n2))) {
                 throw overflow_error("OVERFLOW ERROR!\n");
             } else {
-                return a * b;
+                return _n1 * _n2;
             }
         }
     }
