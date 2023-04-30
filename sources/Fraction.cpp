@@ -52,7 +52,7 @@ namespace ariel {
     }
 
     Fraction operator-(const Fraction &a, const Fraction &b) {
-        return {addOvf(mulOvf(a._numerator, b._denominator), mulOvf(-1 * b._numerator, a._denominator)),
+        return {addOvf(mulOvf(a._numerator, b._denominator), mulOvf(mulOvf(-1, b._numerator), a._denominator)),
                 mulOvf(a._denominator, b._denominator)};
     }
 
@@ -70,15 +70,16 @@ namespace ariel {
 
 
     Fraction &Fraction::operator+=(const Fraction &q) {
-        this->_numerator = addOvf(mulOvf(this->_numerator, q._denominator), mulOvf(q._numerator, this->_denominator));
-        this->_denominator = mulOvf(q._denominator, q._denominator);
+        this->_numerator = addOvf(mulOvf(this->_numerator, q._denominator),
+                                  mulOvf(q._numerator, this->_denominator));
+        this->_denominator = mulOvf(this->_denominator, q._denominator);
         this->reducedForm();
         return *this;
     }
 
     Fraction &Fraction::operator-=(const Fraction &q) {
         this->_numerator = addOvf(mulOvf(this->_numerator, q._denominator),
-                                  mulOvf(-1 * q._numerator, this->_denominator));
+                                  mulOvf(mulOvf(-1, q._numerator), this->_denominator));
         this->_denominator = mulOvf(this->_denominator, q._denominator);
         this->reducedForm();
         return *this;
@@ -92,7 +93,7 @@ namespace ariel {
     }
 
     Fraction &Fraction::operator++() {
-        this->_numerator = addOvf(this->_denominator, this->_denominator);
+        this->_numerator = addOvf(this->_numerator, this->_denominator);
         this->reducedForm();
         return *this;
     }
@@ -105,20 +106,20 @@ namespace ariel {
     }
 
     Fraction &Fraction::operator--() {
-        this->_numerator = addOvf(this->_numerator, -1 * this->_denominator);
+        this->_numerator = addOvf(this->_numerator, mulOvf(-1, this->_denominator));
         this->reducedForm();
         return *this;
     }
 
     Fraction Fraction::operator--(int) {
         Fraction copy = *this;
-        this->_numerator = addOvf(this->_numerator, -1 * this->_denominator);
+        this->_numerator = addOvf(this->_numerator, mulOvf(-1, this->_denominator));
         this->reducedForm();
         return copy;
     }
 
     Fraction Fraction::operator-() const {
-        return {-1 * this->_numerator, this->_denominator};
+        return {mulOvf(-1, this->_numerator), this->_denominator};
     }
 
     bool Fraction::operator!() const {
@@ -210,7 +211,8 @@ namespace ariel {
     }
 
     int addOvf(int a, int b) {
-        if ((a >= 0) && (b >= 0) && (a > max_int - b)) {
+        if (((a >= 0) && (b >= 0) && (a > max_int - b)) ||
+            ((a < 0) && (b < 0) && (a < min_int - b))) {
             throw overflow_error("OVERFLOW ERROR!\n");
         } else {
             return a + b;
@@ -218,11 +220,15 @@ namespace ariel {
     }
 
     int mulOvf(int a, int b) {
-        int c = a * b;
-        if ((a != 0) && (c / a != b)) {
+        if (((a == -1) && (b == min_int)) || ((a == min_int) && (b == -1))) {
             throw overflow_error("OVERFLOW ERROR!\n");
         } else {
-            return a * b;
+            int c = a * b;
+            if (((a != 0) && (c / a != b))) {
+                throw overflow_error("OVERFLOW ERROR!\n");
+            } else {
+                return a * b;
+            }
         }
     }
 
