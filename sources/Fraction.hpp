@@ -19,7 +19,7 @@ namespace ariel {
 
         Fraction(const Fraction &_other);
 
-        Fraction(Fraction &&_other) noexcept ;
+        Fraction(Fraction &&_other) noexcept;
 
         Fraction(const int &n);
 
@@ -85,6 +85,8 @@ namespace ariel {
         friend std::ostream &operator<<(ostream &output, const Fraction &q);
 
         friend std::istream &operator>>(istream &input, Fraction &q);
+
+        Fraction &operator=(Fraction &&_other) noexcept;
 
     private:
         /**

@@ -217,6 +217,12 @@ namespace ariel {
         return round(this->_numerator * 100000.0 / this->_denominator) / 100000;
     }
 
+    Fraction &Fraction::operator=(Fraction &&_other) noexcept {
+        this->_numerator = _other._numerator;
+        this->_denominator = _other._denominator;
+        return *this;
+    }
+
     int addOvf(int a, int b) {
         if (((a >= 0) && (b >= 0) && (a > max_int - b)) ||
             ((a < 0) && (b < 0) && (a < min_int - b))) {
