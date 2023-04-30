@@ -26,7 +26,7 @@ namespace ariel {
         this->reducedForm();
     }
 
-    Fraction::Fraction(const float &f) : _numerator(floor(f * 10000)), _denominator(10000) {
+    Fraction::Fraction(const float &f) : _numerator(floor(f * 1000)), _denominator(1000) {
         this->reducedForm();
     }
 
@@ -119,7 +119,7 @@ namespace ariel {
     }
 
     bool operator==(const Fraction &a, const Fraction &b) {
-        return (double(a) == double(b) || abs(double(a) - double(b)) <= 0.0001);
+        return (double(a) == double(b) || abs(double(a) - double(b)) < 0.001);
     }
 
     bool operator!=(const Fraction &a, const Fraction &b) {
@@ -161,16 +161,19 @@ namespace ariel {
         // remember place for rewinding
         ios::pos_type startPosition = input.tellg();
 
-        if ((!(input >> new_num)) ||
-            (!Fraction::checkNextChar(input, '/')) ||
-            (!(input >> new_den))) {
-
+        if ((!(input >> new_num)) || (!(input >> new_den))) {
+            if (new_den == 0) {
+                throw invalid_argument("ARITHMETIC ERROR: Denominator can not be 0!\n");
+            }
             // rewind on error
             auto errorState = input.rdstate(); // remember error state
             input.clear(); // clear error so seekg will work
             input.seekg(startPosition); // rewind
             input.clear(errorState); // set back the error flag
         } else {
+            if (new_den == 0) {
+                throw invalid_argument("ARITHMETIC ERROR: Denominator can not be 0!\n");
+            }
             q._numerator = new_num;
             q._denominator = new_den;
         }

@@ -1,6 +1,7 @@
 #include "doctest.h"
 #include <stdexcept>
 #include "sources/Fraction.hpp"
+#include <sstream>
 
 using namespace std;
 using namespace ariel;
@@ -117,3 +118,25 @@ TEST_CASE("Boolean operations") {
 //    cout << "c = " << c << " = " << double(c) << endl;
 //    cout << "d = " << d << " = " << double(d) << endl;
 }
+
+TEST_CASE("Output and Input Stream Operators") {
+    Fraction a(1, 2), b(3, 4);
+    ostringstream os;
+
+    // Test operator<<
+    CHECK_NOTHROW(os << a); // Not thrwoing error
+    CHECK(os.str() == "1/2"); // Prints well
+
+    istringstream is("5 6"); // Could also be "5,6" for ex
+    istringstream bad_is("7");
+
+    // Test operator>>
+    cout << b << endl;
+    CHECK_NOTHROW(is >> b);
+    cout << is.str() << endl;
+    cout << b << endl;
+    CHECK(b.getNumerator() == 5);
+    CHECK(b.getDenominator() == 6);
+    CHECK_THROWS(bad_is >> b); // Throws cuz the input is one number
+}
+
