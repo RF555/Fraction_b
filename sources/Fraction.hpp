@@ -12,9 +12,12 @@ namespace ariel {
     public:
         Fraction();
 
-        Fraction(int x, int y);
+        /**
+         * @throw invalid_argument when denominator is 0.
+         */
+        Fraction(int numerator, int denominator);
 
-        Fraction(const Fraction &q);
+       Fraction(const Fraction &_other);
 
         Fraction(const int &n);
 
@@ -24,9 +27,9 @@ namespace ariel {
 
         ~Fraction();
 
-        int numerator();
+        int getNumerator();
 
-        int denominator();
+        int getDenominator();
 
         Fraction &operator=(const Fraction &q);
 

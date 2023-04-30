@@ -8,21 +8,21 @@ namespace ariel {
 
     Fraction::Fraction() : _numerator(0), _denominator(1) {}
 
-    Fraction::Fraction(int x, int y) : _numerator(x), _denominator(y) {
-        if (y == 0) {
-            throw overflow_error("ARITHMETIC ERROR: Denominator can not be 0!\n");
+    Fraction::Fraction(int numerator, int denominator = 1) : _numerator(numerator), _denominator(denominator) {
+        if (denominator == 0) {
+            throw invalid_argument("ARITHMETIC ERROR: Denominator can not be 0!\n");
         }
         this->reducedForm();
     }
 
     Fraction::Fraction(const int &n) : _numerator(n), _denominator(1) {}
 
-    Fraction::Fraction(const Fraction &q)
-            : _numerator(q._numerator), _denominator(q._denominator) {
+    Fraction::Fraction(const Fraction &_other)
+            : _numerator(_other._numerator), _denominator(_other._denominator) {
         this->reducedForm();
     }
 
-    Fraction::Fraction(const double &d) : _numerator(floor(d * 10000)), _denominator(10000) {
+    Fraction::Fraction(const double &d) : _numerator(floor(d * 1000)), _denominator(1000) {
         this->reducedForm();
     }
 
@@ -32,9 +32,9 @@ namespace ariel {
 
     Fraction::~Fraction() = default;
 
-    int Fraction::numerator() { return this->_numerator; }
+    int Fraction::getNumerator() { return this->_numerator; }
 
-    int Fraction::denominator() { return this->_denominator; }
+    int Fraction::getDenominator() { return this->_denominator; }
 
     Fraction &Fraction::operator=(const Fraction &q) {
         if (this != &q) {
