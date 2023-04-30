@@ -24,15 +24,22 @@ namespace ariel {
         this->reducedForm();
     }
 
-    Fraction::Fraction(const double &d) : _numerator(floor(d * 1000)), _denominator(1000) {
+    Fraction::Fraction(Fraction &&_other) noexcept: _numerator(_other._numerator), _denominator(_other._denominator) {
         this->reducedForm();
     }
 
-    Fraction::Fraction(const float &f) : _numerator(floor(f * 1000)), _denominator(1000) {
+    Fraction::Fraction(
+            const double &d) : _numerator(floor(d * 1000)), _denominator(1000) {
         this->reducedForm();
     }
 
-    Fraction::~Fraction() = default;
+    Fraction::Fraction(
+            const float &f) : _numerator(floor(f * 1000)), _denominator(1000) {
+        this->reducedForm();
+    }
+
+    Fraction::~Fraction() =
+    default;
 
     int Fraction::getNumerator() { return this->_numerator; }
 
