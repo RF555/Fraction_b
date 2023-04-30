@@ -17,7 +17,7 @@ namespace ariel {
          */
         Fraction(int numerator, int denominator);
 
-       Fraction(const Fraction &_other);
+        Fraction(const Fraction &_other);
 
         Fraction(const int &n);
 
@@ -92,7 +92,25 @@ namespace ariel {
 
         static istream &checkNextChar(istream &input, char expectedChar);
 
-
     };
+
+    /**
+ * Check for overflow when adding 2 integers.
+ * @param a
+ * @param b
+ * @return Sum of a and b.
+ * @throw overflow_error
+ */
+    int addOvf(int a, int b);
+
+    /**
+     * Check for overflow when multiplying 2 integers.
+     * @param a
+     * @param b
+     * @return Multiplication of a and b.
+     * @throw overflow_error
+     */
+    int mulOvf(int a, int b);
+
 }
 #endif
