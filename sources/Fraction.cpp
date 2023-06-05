@@ -17,10 +17,12 @@ namespace ariel {
         this->reducedForm();
     }
 
-    Fraction::Fraction(const int &n) : _numerator(n), _denominator(1) {}
+    Fraction::Fraction(const int &n) :
+    _numerator(n), _denominator(1) {}
 
     Fraction::Fraction(const Fraction &_frac)
-            : _numerator(_frac._numerator), _denominator(_frac._denominator) {
+            : _numerator(_frac._numerator),
+            _denominator(_frac._denominator) {
         this->reducedForm();
     }
 

@@ -86,11 +86,13 @@ namespace ariel {
 
         friend std::istream &operator>>(istream &input, Fraction &_frac);
 
-        Fraction &operator=(Fraction &&_frac) noexcept;
+        Fraction &operator=(Fraction &&_frac)
+
+        noexcept;
 
     private:
         /**
-         * Reduce the fraction to it's minimal form.
+         * @brief Reduce the fraction to it's minimal form.
          */
         void reducedForm();
 
@@ -99,16 +101,16 @@ namespace ariel {
     };
 
     /**
- * Check for overflow when adding 2 integers.
- * @param _n1
- * @param _n2
- * @return Sum of _n1 and _n2.
- * @throw overflow_error
- */
+     * @brief Check for overflow when adding 2 integers.
+     * @param _n1
+     * @param _n2
+     * @return Sum of _n1 and _n2.
+     * @throw overflow_error
+     */
     int addOvf(int _n1, int _n2);
 
     /**
-     * Check for overflow when multiplying 2 integers.
+     * @brief Check for overflow when multiplying 2 integers.
      * @param _n1
      * @param _n2
      * @return Multiplication of _n1 and _n2.
