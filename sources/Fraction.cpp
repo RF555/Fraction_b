@@ -17,24 +17,31 @@ namespace ariel {
         this->reducedForm();
     }
 
-    Fraction::Fraction(const int &n) : _numerator(n), _denominator(1) {}
+    Fraction::Fraction(const int &n) :
+            _numerator(n),
+            _denominator(1) {}
 
     Fraction::Fraction(const Fraction &_frac)
-            : _numerator(_frac._numerator), _denominator(_frac._denominator) {
+            : _numerator(_frac._numerator),
+              _denominator(_frac._denominator) {
         this->reducedForm();
     }
 
-    Fraction::Fraction(Fraction &&_frac) noexcept: _numerator(_frac._numerator), _denominator(_frac._denominator) {
+    Fraction::Fraction(Fraction &&_frac) :
+            _numerator(_frac._numerator),
+            _denominator(_frac._denominator) {
         this->reducedForm();
     }
 
-    Fraction::Fraction(
-            const double &dec) : _numerator(floor(dec * 1000)), _denominator(1000) {
+    Fraction::Fraction(const double &dec) :
+            _numerator(floor(dec * 1000)),
+            _denominator(1000) {
         this->reducedForm();
     }
 
-    Fraction::Fraction(
-            const float &flt) : _numerator(floor(flt * 1000)), _denominator(1000) {
+    Fraction::Fraction(const float &flt) :
+            _numerator(floor(flt * 1000)),
+            _denominator(1000) {
         this->reducedForm();
     }
 
@@ -59,7 +66,8 @@ namespace ariel {
     }
 
     Fraction operator-(const Fraction &_frac1, const Fraction &_frac2) {
-        return {addOvf(mulOvf(_frac1._numerator, _frac2._denominator), mulOvf(mulOvf(-1, _frac2._numerator), _frac1._denominator)),
+        return {addOvf(mulOvf(_frac1._numerator, _frac2._denominator),
+                       mulOvf(mulOvf(-1, _frac2._numerator), _frac1._denominator)),
                 mulOvf(_frac1._denominator, _frac2._denominator)};
     }
 
@@ -217,33 +225,37 @@ namespace ariel {
         return round(this->_numerator * 100000.0 / this->_denominator) / 100000;
     }
 
-    Fraction &Fraction::operator=(Fraction &&_frac) noexcept {
-        this->_numerator = _frac._numerator;
-        this->_denominator = _frac._denominator;
-        return *this;
-    }
+    Fraction &Fraction::operator=(Fraction &&_frac)
 
-    int addOvf(int _n1, int _n2) {
-        if (((_n1 >= 0) && (_n2 >= 0) && (_n1 > max_int - _n2)) ||
-            ((_n1 < 0) && (_n2 < 0) && (_n1 < min_int - _n2))) {
+    noexcept {
+    this->
+    _numerator = _frac._numerator;
+    this->
+    _denominator = _frac._denominator;
+    return *this;
+}
+
+int addOvf(int _n1, int _n2) {
+    if (((_n1 >= 0) && (_n2 >= 0) && (_n1 > max_int - _n2)) ||
+        ((_n1 < 0) && (_n2 < 0) && (_n1 < min_int - _n2))) {
+        throw overflow_error("OVERFLOW ERROR!\n");
+    } else {
+        return _n1 + _n2;
+    }
+}
+
+int mulOvf(int _n1, int _n2) {
+    if (((_n1 == -1) && (_n2 == min_int)) || ((_n1 == min_int) && (_n2 == -1))) {
+        throw overflow_error("OVERFLOW ERROR!\n");
+    } else {
+        int c = _n1 * _n2;
+        if (((_n1 != 0) && (c / _n1 != _n2))) {
             throw overflow_error("OVERFLOW ERROR!\n");
         } else {
-            return _n1 + _n2;
+            return _n1 * _n2;
         }
     }
-
-    int mulOvf(int _n1, int _n2) {
-        if (((_n1 == -1) && (_n2 == min_int)) || ((_n1 == min_int) && (_n2 == -1))) {
-            throw overflow_error("OVERFLOW ERROR!\n");
-        } else {
-            int c = _n1 * _n2;
-            if (((_n1 != 0) && (c / _n1 != _n2))) {
-                throw overflow_error("OVERFLOW ERROR!\n");
-            } else {
-                return _n1 * _n2;
-            }
-        }
-    }
+}
 
 
 }

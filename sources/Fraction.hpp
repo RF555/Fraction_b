@@ -19,9 +19,7 @@ namespace ariel {
 
         Fraction(const Fraction &_frac);
 
-        Fraction(Fraction &&_frac)
-
-        noexcept;
+        Fraction(Fraction &&_frac);
 
         Fraction(const int &n);
 
